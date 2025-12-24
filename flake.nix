@@ -12,7 +12,7 @@
     in
     {
       packages.${system}.default = pkgs.stdenv.mkDerivation {
-        pname = "nixos-plymouth-nix-bloom";
+        pname = "nix-bloom";
         version = "0.1.0";
         src = ./.;
 
