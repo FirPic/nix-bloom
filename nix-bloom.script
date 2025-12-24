@@ -1,0 +1,172 @@
+## Author : Samuel Hierholzer (stolen from Aditya Shakya [adi1090x])
+
+// Screen size
+screen.w = Window.GetWidth();
+screen.h = Window.GetHeight();
+screen.half.w = Window.GetWidth() / 2;
+screen.half.h = Window.GetHeight() / 2;
+
+// Question prompt
+question = null;
+answer = null;
+
+// Message
+message = null;
+
+// Password prompt
+bullets = null;
+prompt = null;
+bullet.image = Image("bullet.png");
+
+// Flow
+state.status = "play";
+state.time = 0.0;
+anim_state = "loading"; // loading, unloading
+unloading_index = 47;
+
+// Amount of images - 1 as we start with 0
+image_quantity = 48;
+
+//--------------------------------- Refresh (Logo animation) --------------------------
+
+# cycle through all images
+for (i = 0; i < image_quantity; i++)
+  images[i] = Image(i + ".png");
+animation_sprite = Sprite();
+
+# set image position
+animation_sprite.SetX(Window.GetX() + (Window.GetWidth() / 2 - images[0].GetWidth() / 2)); # Place images in the center
+animation_sprite.SetY(Window.GetY() + (Window.GetHeight() / 2 - images[0].GetHeight() / 2));
+
+# Set background color to white
+Window.SetBackgroundTopColor (1, 1, 1);
+Window.SetBackgroundBottomColor (1, 1, 1);
+
+progress = 0;
+
+fun refresh_callback ()
+  {
+    if (anim_state == "loading") {
+        animation_sprite.SetImage(images[Math.Int(progress / 2) % image_quantity]);
+        progress++;
+    } else if (anim_state == "unloading") {
+        animation_sprite.SetImage(images[unloading_index]);
+        unloading_index--;
+        if (unloading_index < 0) {
+            anim_state = "loading"; // Restart loading after unload
+            progress = 0;
+            unloading_index = 47; // Reset for next time
+        }
+    }
+  }
+  
+Plymouth.SetRefreshFunction (refresh_callback);
+
+//------------------------------------- Password prompt -------------------------------
+// Images
+lock_image = Image("lock.png");
+entry_image = Image("entry.png");
+
+prompt_lock = null;
+prompt_entry = null;
+
+fun DisplayQuestionCallback(prompt, entry) {
+    question = null;
+    answer = null;
+
+    if (entry == "")
+        entry = "<answer>";
+
+    question.image = Image.Text(prompt, 0, 0, 0);
+    question.sprite = Sprite(question.image);
+    question.sprite.SetX(screen.half.w - question.image.GetWidth() / 2);
+    question.sprite.SetY(screen.h - 4 * question.image.GetHeight());
+
+    answer.image = Image.Text(entry, 0, 0, 0);
+    answer.sprite = Sprite(answer.image);
+    answer.sprite.SetX(screen.half.w - answer.image.GetWidth() / 2);
+    answer.sprite.SetY(screen.h - 2 * answer.image.GetHeight());
+}
+Plymouth.SetDisplayQuestionFunction(DisplayQuestionCallback);
+
+fun DisplayPasswordCallback(nil, bulletCount) {
+    // Keep animation running
+    // state.status = "pause";
+    
+    // Ensure we are logically in loading state if prompt comes up
+    if (anim_state != "loading") {
+        anim_state = "loading";
+        progress = 0; 
+    }
+    
+    // Lock Icon
+    if (prompt_lock == null) {
+        prompt_lock.image = lock_image;
+        prompt_lock.sprite = Sprite(prompt_lock.image);
+        prompt_lock.sprite.SetX(screen.half.w - prompt_lock.image.GetWidth() / 2);
+        prompt_lock.sprite.SetY(screen.half.h - prompt_lock.image.GetHeight()); 
+    }
+    
+    // Entry Box
+    if (prompt_entry == null) {
+        prompt_entry.image = entry_image;
+        prompt_entry.sprite = Sprite(prompt_entry.image);
+        prompt_entry.sprite.SetX(screen.half.w - prompt_entry.image.GetWidth() / 2);
+        prompt_entry.sprite.SetY(prompt_lock.sprite.GetY() + prompt_lock.image.GetHeight() + 10);
+    }
+    
+    // Bullets
+    local_bullet_image = bullet.image;
+    
+    totalWidth = bulletCount * local_bullet_image.GetWidth();
+    startPos = screen.half.w - totalWidth / 2;
+    
+    bullets = null;
+    for (i = 0; i < bulletCount; i++) {
+        bullets[i].sprite = Sprite(local_bullet_image);
+        bullets[i].sprite.SetX(startPos + i * local_bullet_image.GetWidth());
+        // Center vertically in the entry box
+        bullets[i].sprite.SetY(prompt_entry.sprite.GetY() + (prompt_entry.image.GetHeight() / 2) - (local_bullet_image.GetHeight() / 2));
+    }
+}
+Plymouth.SetDisplayPasswordFunction(DisplayPasswordCallback);
+
+//--------------------------- Normal display ----------------------
+fun DisplayNormalCallback() {
+    state.status = "play";
+    
+    // Trigger Unloader animation on success/continue
+    anim_state = "unloading";
+    unloading_index = 47; // Start from end
+    
+    bullets = null;
+    prompt = null;
+    message = null;
+    question = null;
+    answer = null;
+    
+    // Hide Prompt UI
+    if (prompt_lock) {
+        prompt_lock.sprite.SetOpacity(0);
+        prompt_lock = null; 
+    }
+    if (prompt_entry) {
+        prompt_entry.sprite.SetOpacity(0);
+        prompt_entry = null;
+    }
+}
+Plymouth.SetDisplayNormalFunction(DisplayNormalCallback);
+
+//----------------------------------------- Message --------------------------------
+fun MessageCallback(text) {
+    message.image = Image.Text(text, 0, 0, 0);
+    message.sprite = Sprite(message.image);
+    
+    // Position below the entry box if it exists, otherwise bottom center
+    if (prompt_entry) {
+         message.sprite.SetPosition(screen.half.w - message.image.GetWidth() / 2, prompt_entry.sprite.GetY() + prompt_entry.image.GetHeight() + 20);
+    } else {
+         message.sprite.SetPosition(screen.half.w - message.image.GetWidth() / 2, screen.h - 100);
+    }
+}
+Plymouth.SetMessageFunction(MessageCallback);
