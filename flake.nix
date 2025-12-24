@@ -20,7 +20,7 @@
 
         installPhase = ''
           mkdir -p $out/share/plymouth/themes/nix-bloom
-          cp * $out/share/plymouth/themes/nix-bloom/
+          cp -r * $out/share/plymouth/themes/nix-bloom/
           
           # Fix paths in .plymouth file
           sed -i "s@/usr/share/plymouth/themes/nix-bloom@$out/share/plymouth/themes/nix-bloom@g" $out/share/plymouth/themes/nix-bloom/nix-bloom.plymouth
