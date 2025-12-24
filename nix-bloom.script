@@ -31,7 +31,7 @@ image_quantity = 48;
 
 # cycle through all images
 for (i = 0; i < image_quantity; i++)
-  images[i] = Image(i + ".png");
+  images[i] = Image("logo/" + i + ".png");
 animation_sprite = Sprite();
 
 # set image position
