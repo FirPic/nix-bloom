@@ -77,12 +77,12 @@ fun DisplayQuestionCallback(prompt, entry) {
     if (entry == "")
         entry = "<answer>";
 
-    question.image = Image.Text(prompt, 0, 0, 0);
+    question.image = Image.Text(prompt, 1, 1, 1);
     question.sprite = Sprite(question.image);
     question.sprite.SetX(screen.half.w - question.image.GetWidth() / 2);
     question.sprite.SetY(screen.h - 4 * question.image.GetHeight());
 
-    answer.image = Image.Text(entry, 0, 0, 0);
+    answer.image = Image.Text(entry, 1, 1, 1);
     answer.sprite = Sprite(answer.image);
     answer.sprite.SetX(screen.half.w - answer.image.GetWidth() / 2);
     answer.sprite.SetY(screen.h - 2 * answer.image.GetHeight());
@@ -159,7 +159,7 @@ Plymouth.SetDisplayNormalFunction(DisplayNormalCallback);
 
 //----------------------------------------- Message --------------------------------
 fun MessageCallback(text) {
-    message.image = Image.Text(text, 0, 0, 0);
+    message.image = Image.Text(text, 1, 1, 1);
     message.sprite = Sprite(message.image);
     
     // Position below the entry box if it exists, otherwise bottom center
