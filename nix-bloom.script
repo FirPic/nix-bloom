@@ -38,16 +38,16 @@ animation_sprite = Sprite();
 animation_sprite.SetX(Window.GetX() + (Window.GetWidth() / 2 - images[0].GetWidth() / 2)); # Place images in the center
 animation_sprite.SetY(Window.GetY() + (Window.GetHeight() / 2 - images[0].GetHeight() / 2));
 
-# Set background color to white
-Window.SetBackgroundTopColor (1, 1, 1);
-Window.SetBackgroundBottomColor (1, 1, 1);
+# Set background color to black
+Window.SetBackgroundTopColor (0, 0, 0);
+Window.SetBackgroundBottomColor (0, 0, 0);
 
 progress = 0;
 
 fun refresh_callback ()
   {
     if (anim_state == "loading") {
-        animation_sprite.SetImage(images[Math.Int(progress / 2) % image_quantity]);
+        animation_sprite.SetImage(images[Math.Int(progress / 4) % image_quantity]);
         progress++;
     } else if (anim_state == "unloading") {
         animation_sprite.SetImage(images[unloading_index]);
