@@ -17,6 +17,7 @@ message = null;
 bullets = null;
 prompt = null;
 bullet.image = Image("bullet.png");
+bullet.image = bullet.image.Scale(bullet.image.GetWidth() * 0.5, bullet.image.GetHeight() * 0.5);
 
 // Flow
 state.status = "play";
@@ -65,6 +66,7 @@ Plymouth.SetRefreshFunction (refresh_callback);
 //------------------------------------- Password prompt -------------------------------
 // Images
 lock_image = Image("lock.png");
+lock_image = lock_image.Scale(lock_image.GetWidth() * 0.5, lock_image.GetHeight() * 0.5);
 entry_image = Image("entry.png");
 
 prompt_lock = null;
@@ -104,7 +106,7 @@ fun DisplayPasswordCallback(nil, bulletCount) {
         prompt_lock.image = lock_image;
         prompt_lock.sprite = Sprite(prompt_lock.image);
         prompt_lock.sprite.SetX(screen.half.w - prompt_lock.image.GetWidth() / 2);
-        prompt_lock.sprite.SetY(screen.half.h - prompt_lock.image.GetHeight()); 
+        prompt_lock.sprite.SetY(screen.half.h - prompt_lock.image.GetHeight() / 2); 
     }
     
     // Entry Box
@@ -112,7 +114,7 @@ fun DisplayPasswordCallback(nil, bulletCount) {
         prompt_entry.image = entry_image;
         prompt_entry.sprite = Sprite(prompt_entry.image);
         prompt_entry.sprite.SetX(screen.half.w - prompt_entry.image.GetWidth() / 2);
-        prompt_entry.sprite.SetY(prompt_lock.sprite.GetY() + prompt_lock.image.GetHeight() + 10);
+        prompt_entry.sprite.SetY(prompt_lock.sprite.GetY() + prompt_lock.image.GetHeight() + 60);
     }
     
     // Bullets
