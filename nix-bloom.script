@@ -17,7 +17,7 @@ message = null;
 bullets = null;
 prompt = null;
 bullet.image = Image("bullet.png");
-bullet.image = bullet.image.Scale(bullet.image.GetWidth() * 0.5, bullet.image.GetHeight() * 0.5);
+bullet.image = bullet.image.Scale(bullet.image.GetWidth() * 0.15, bullet.image.GetHeight() * 0.15);
 
 // Flow
 state.status = "play";
@@ -36,7 +36,7 @@ for (i = 0; i < image_quantity; i++)
 animation_sprite = Sprite();
 
 # set image position
-animation_sprite.SetX(Window.GetX() + (Window.GetWidth() / 2 - images[0].GetWidth() / 2)); # Place images in the center
+animation_sprite.SetX(Window.GetX() + (Window.GetWidth() / 2 - images[0].GetWidth() / 2));
 animation_sprite.SetY(Window.GetY() + (Window.GetHeight() / 2 - images[0].GetHeight() / 2));
 
 # Set background color to black
@@ -66,8 +66,9 @@ Plymouth.SetRefreshFunction (refresh_callback);
 //------------------------------------- Password prompt -------------------------------
 // Images
 lock_image = Image("lock.png");
-lock_image = lock_image.Scale(lock_image.GetWidth() * 0.5, lock_image.GetHeight() * 0.5);
+lock_image = lock_image.Scale(lock_image.GetWidth() * 0.25, lock_image.GetHeight() * 0.25);
 entry_image = Image("entry.png");
+entry_image = entry_image.Scale(entry_image.GetWidth() * 1.1, entry_image.GetHeight() * 1.1);
 
 prompt_lock = null;
 prompt_entry = null;
