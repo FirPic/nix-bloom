@@ -121,12 +121,21 @@ fun DisplayPasswordCallback(nil, bulletCount) {
     
     // Bullets
     local_bullet_image = bullet.image;
+
+    // Calculate max bullets that fit in entry box with some padding
+    entryWidth = prompt_entry.image.GetWidth();
+    bulletWidth = local_bullet_image.GetWidth();
+    maxBullets = Math.Int((entryWidth - 20) / bulletWidth); // 20px padding
+
+    displayCount = bulletCount;
+    if (displayCount > maxBullets)
+        displayCount = maxBullets;
     
-    totalWidth = bulletCount * local_bullet_image.GetWidth();
+    totalWidth = displayCount * bulletWidth;
     startPos = screen.half.w - totalWidth / 2;
     
     bullets = null;
-    for (i = 0; i < bulletCount; i++) {
+    for (i = 0; i < displayCount; i++) {
         bullets[i].sprite = Sprite(local_bullet_image);
         bullets[i].sprite.SetX(startPos + i * local_bullet_image.GetWidth());
         // Center vertically in the entry box
