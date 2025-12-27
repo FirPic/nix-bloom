@@ -17,7 +17,7 @@ message = null;
 bullets = null;
 prompt = null;
 bullet.image = Image("bullet.png");
-bullet.image = bullet.image.Scale(bullet.image.GetWidth() * 0.15, bullet.image.GetHeight() * 0.15);
+bullet.image = bullet.image.Scale(bullet.image.GetWidth() * 0.35, bullet.image.GetHeight() * 0.35);
 
 // Flow
 state.status = "play";
@@ -115,7 +115,8 @@ fun DisplayPasswordCallback(nil, bulletCount) {
         prompt_entry.image = entry_image;
         prompt_entry.sprite = Sprite(prompt_entry.image);
         prompt_entry.sprite.SetX(screen.half.w - prompt_entry.image.GetWidth() / 2);
-        prompt_entry.sprite.SetY(prompt_lock.sprite.GetY() + prompt_lock.image.GetHeight() + 60);
+        // Position at bottom with 50px padding
+        prompt_entry.sprite.SetY(screen.h - prompt_entry.image.GetHeight() - 50);
     }
     
     // Bullets
@@ -165,9 +166,9 @@ fun MessageCallback(text) {
     message.image = Image.Text(text, 1, 1, 1);
     message.sprite = Sprite(message.image);
     
-    // Position below the entry box if it exists, otherwise bottom center
+    // Position above the entry box if it exists, otherwise bottom center
     if (prompt_entry) {
-         message.sprite.SetPosition(screen.half.w - message.image.GetWidth() / 2, prompt_entry.sprite.GetY() + prompt_entry.image.GetHeight() + 20);
+         message.sprite.SetPosition(screen.half.w - message.image.GetWidth() / 2, prompt_entry.sprite.GetY() - message.image.GetHeight() - 20);
     } else {
          message.sprite.SetPosition(screen.half.w - message.image.GetWidth() / 2, screen.h - 100);
     }
